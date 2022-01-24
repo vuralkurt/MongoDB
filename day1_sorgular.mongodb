@@ -1,0 +1,70 @@
+////=================================================================
+////                      SORGULAR (QUERIES) https://docs.mongodb.com/manual/reference/operator/query-comparison/      adresine bakabilirler
+
+////=================================================================
+
+
+////-----------------------------------------------------------------
+//// 1) "URUNLER" adinda bir veritabani ve icerisinde "fiyatlar" 
+//// adinda bir collection tanimlayalim.  
+////-----------------------------------------------------------------
+use("URUNLER");
+
+////-----------------------------------------------------------------
+//// 2) asagidaki dokumanlari collection'a kaydedelim ve listeleyelim.  
+////-----------------------------------------------------------------
+use("URUNLER");
+db.fiyatlar.insertMany([
+{"urunAdi":"TV", "fiyat": 5000, "vergi": 10 ,"summary":[{"version":1},{"show":"yok"}]},
+{"urunAdi":"Telefon", "fiyat": 3500, "vergi": 20 ,"hediye":"kapak"},
+{"urunAdi":"Utu", "fiyat": 1500, "vergi": 5 },
+{"urunAdi":"Koltuk", "fiyat": 5000, "vergi": 10},
+{"urunAdi":"Buzdolabi", "fiyat": 4000, "vergi": 10 } ] ); 
+
+
+use("URUNLER")
+db.fiyatlar.find();
+
+
+////-----------------------------------------------------------------
+//// 3) ilk üc dokumani sorgulayalim --- limit() metodu
+////-----------------------------------------------------------------
+use("URUNLER")
+db.fiyatlar.find().limit(3);
+
+
+
+
+////-----------------------------------------------------------------
+//// 4) Sadece 2. ve 3. dokumanlari sorgulayalim   
+////-----------------------------------------------------------------
+use("URUNLER")
+db.fiyatlar.find().skip(1).limit(2);
+
+
+////-----------------------------------------------------------------
+//// 5) Birinci dokumani sorgulayalim   
+////-----------------------------------------------------------------
+use("URUNLER")
+db.fiyatlar.findOne();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
