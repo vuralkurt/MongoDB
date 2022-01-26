@@ -1,0 +1,46 @@
+////=================================================================
+////            findOneAndUpdate - findOneAndReplace
+////=================================================================
+
+// A - findOneAndReplace() 
+//----------------------------
+//   1-) belirtilen koşullara uyan ilk sorguyu bulur ve degistirir. 
+//   2-) Komut icerisinde belirtilen kisimlari guncellerken bos birakilan 
+//       alanlari kaldirir. (API'lerdeki PUT metoduna benzetilebilir).
+//   3-) Islem sonunda VSCODE ilgili dokumanin guncellenMEmiş halini gosterir.yani ben bunu değiştirdim diye haber veriyor
+//   4-) SYNTAX
+//        db.collection.findOneAndReplace( {filter}, {replacement}, {options} )   
+//       
+// B - findOneAndUpdate() 
+//----------------------------
+///  1-) Belirtilen koşullara uyan ilk sorguyu bulur ve degistirir. 
+//   2-) Komut icerisinde belirtilen kisimlari guncellerken bos birakilan 
+//       alanlari modifiye etmez  (API'lerdeki PACTH metoduna benzetilebilir).
+//   3-) komutun kosul kismindan sonra degislikileri gerceklestirmek icin bir 
+//       atomic operator kullanilir. ($set (direk değer verilirse), $inc(arttırma azaltma), $mul (çarpma)vb.)
+//   4)  Islem sonunda VSCODE ilgili dokumanin guncellenMEmiş halini gosterir.
+//   5-) SYNTAX
+//       db.collection.findOneAndUpdate( {filter}, {update}, {options} ) ******************
+////=================================================================
+
+////-----------------------------------------------------------------
+//// 1) "GOOGLE" adinda bir veritabani ve icerisinde "personel" 
+//// adinda bir collection tanimlayalim.  
+////-----------------------------------------------------------------
+use("GOOGLE");
+// db.createCollection("personel");
+
+// ////-----------------------------------------------------------------
+// //// 2) asagidaki dokumanlari collection'a kaydedelim.   
+// ////-----------------------------------------------------------------
+use("GOOGLE");
+db.personel.insertMany([
+ {"isim":"Ali Bak", "maas": 5000, "iseBaslama": new Date('2014-03-01')},
+ {"isim":"Can Tak", "maas": 7500, "iseBaslama": new Date('2011-03-04')},
+ {"isim":"Veli Gel", "maas": 3550, "iseBaslama": new Date('2013-03-01')},
+ {"isim":"Can Yak", "maas": 4800, "iseBaslama": new Date('2011-09-30')},
+ {"isim":"Veli Git", "maas": 7200, "iseBaslama": new Date('2007-12-06')},
+ {"isim":"Ali Han", "maas": 5250, "iseBaslama": new Date('2004-11-21')},
+ {"isim":"Ayse Gel", "maas": 10500, "iseBaslama": new Date('1990-07-23')},
+ {"isim":"Su Ak", "maas": 3300, "iseBaslama": new Date('1999-03-30')},
+  ]);
