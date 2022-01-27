@@ -217,7 +217,55 @@ db.hesaplar.insertMany(
 
 use("MEDYA");
 db.hesaplar.aggregate({$addFields:{toplaHarcama: {$sum:"$harcamalar"} ,toplamKazanc:{$sum:"$kazanc"}}},
-{$addFields:{bakiye:{$sum:["$toplaHarcama","$toplamKazanc"]}}  })
+{$addFields:{bakiye:{$sum:["$toplaHarcama","$toplamKazanc"]}}  },{$project:{"harcamalar":0,kazanc:0,_id:0} })
+
+// bakiye yeni olustugu icin ayri bir field olarak acilmalidir.Cünkü yeni olusturuldu.
+
+
+///---------------------------------------------------------------------------------
+//// 14) hesaplar collection'nin muhasabe adinda bir kopyasini olusturalim.
+////---------------------------------------------------------------------------------
+use("MEDYA")
+ db.hesaplar.aggregate({$project:{_id:0}}, {$merge: {into:"muhasabe"}});
+//id:0 kapatmasaydım eski id lerle kopya oluşturacaktı, şimdi default verecek
+////---------------------------------------------------------------------------------
+//// 15) hesaplar collection'nindan harcamalar kismini cikararak kazanclar adinda 
+////     yeni bir kopyasini olusturalim.
+// ////---------------------------------------------------------------------------------
+use("MEDYA")
+ db.hesaplar.aggregate({$project: {harcamalar:0, _id:0}}, {$merge: {into:"kazanclar"}});
+
+
+////==================================================================================
+////                                  BULKWRITE (toplu yazmak)
+////  Birden fazla islemi ayni komutla gerceklestirmek icin BulkWrite kullanilabilir.
+// https://docs.mongodb.com/manual/reference/method/db.collection.bulkWrite/
+// db.collections.bulkWrite([
+//       {insertOne:{"document": {yazar: "........", fiyat:....., yayinYili : ...... }}},
+//   {updateOne:{"filter":{yazar: "......"}, "update": {$set: {fiyat:.......}}}},
+//   {replaceOne:{"filter":{yazar:"......."}, "replacement": {yazar: "......", fiyat:.....}}},
+//   {deleteOne:{"filter" : {yazar: "........."}}}
+//    ]);
+//==================================================================================
+use("MEDYA");
+db.hikayeler.insertMany(
+[{"yazar" : "Mehmet Bak", "fiyat" : 60, "yayinYili" : 1998 },
+{"yazar" : "Ali Gel", "fiyat" : 75, "yayinYili" : 2000 },
+{"yazar" : "Su Ak", "fiyat" : 90, "yayinYili" : 2005 },
+{"yazar" : "İsmet Kaç", "fiyat" : 35, "yayinYili" : 2010 },
+{"yazar" : "Pelin Su", "fiyat" : 80, "yayinYili" : 2020 },
+{"yazar" : "Suat Ok", "fiyat" : 54, "yayinYili" : 2001},
+{"yazar" : "Pelin Su", "fiyat" : 50, "yayinYili" : 2020 }]);
+
+use("MEDYA")
+
+db.hikayeler.bulkWrite([
+  {insertOne:{"document": {yazar: "Selim Genc", fiyat: 77, yayinYili : 2021 }}},
+  {updateOne:{"filter":{yazar: "Ali Gel"}, "update": {$set: {fiyat:99}}}},
+  {replaceOne:{"filter":{yazar:"Pelin Su"}, "replacement": {yazar: "Ceylan Kaya", fiyat:55}}},
+  {deleteOne:{"filter" : {yazar: "Suat Ok"}}}
+]);
+
 
 
 
