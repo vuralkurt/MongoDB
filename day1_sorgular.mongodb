@@ -13,6 +13,7 @@ use("URUNLER");
 ////-----------------------------------------------------------------
 //// 2) asagidaki dokumanlari collection'a kaydedelim ve listeleyelim.  
 ////-----------------------------------------------------------------
+
 use("URUNLER");
 db.fiyatlar.insertMany([
 {"urunAdi":"TV", "fiyat": 5000, "vergi": 10 ,"summary":[{"version":1},{"show":"yok"}]},
@@ -66,7 +67,11 @@ db.fiyatlar.findOne();
 //// 5) fiyat=5000 olan ve urunAdi="TV" olan dokumanlari listeleyiniz. 
 ////-----------------------------------------------------------------
 use("URUNLER")
-db.fiyatlar.find({$and:[{"fiyat":5000},{"urunAdi":"TV"}]});
+db.fiyatlar.find({$or:[{"fiyat":4000},{"urunAdi":"Utu"}]});
+use("URUNLER")
+db.fiyatlar.find({$and:[{"fiyat":5000},{"urunAdi":"TV"}]})
+use("URUNLER")
+db.fiyatlar.find({$nor:[{"vergi":10},{"urunAdi":"Utu"}]});
 
 
 use("URUNLER")
@@ -88,7 +93,10 @@ db.fiyatlar.find({$or:[{"vergi":10},{"urunAdi":"Utu"}]});
  // db.fiyatlar.find({ "fiyat": 5000 }); ==> bu yeterlidir ama asagidaki yazim seklide var.
 
 use("URUNLER");
-db.fiyatlar.find({fiyat:  {$eq:5000}});
+db.fiyatlar.find({ "fiyat": 5000 });
+use("URUNLER");
+db.fiyatlar.find({fiyat: {$eq:5000}});
+
 
 ////
 //// 8) fiyati = 5000 esit olmayanlari bulunuz.
@@ -100,6 +108,7 @@ use("URUNLER");
 db.fiyatlar.find({fiyat: {$ne:5000}}); //not equal
 
 db.fiyatlar.find({fiyat: {$not: {$eq:5000}}}); // esit olmayan
+
 
 
 ////-----------------------------------------------------------------
